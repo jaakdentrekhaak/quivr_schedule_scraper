@@ -1,5 +1,5 @@
 # Author: Jens Putzeys
-# Date: 27-10-2020 (EU)
+# Date: 27-10-2020 (DD-MM-YYYY)
 
 from selenium import webdriver
 import time
