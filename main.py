@@ -124,6 +124,16 @@ def get_days(driver):
     return ls
 
 
+def get_week_date(driver):
+    """
+    Returns the dates of the week.
+    :param driver: webdriver
+    :return: list of dates (
+    """
+    xpath_date = '/html/body/div/div/div[1]/div[2]/main/div/div/div[1]/div[2]/div/h3'
+    return driver.find_element_by_xpath(xpath_date).text
+
+
 def get_lessons_of_day(day):
     """
     Returns the lessons as a string for the given day webelement
@@ -201,16 +211,17 @@ def parse_list(li):
     return ls
 
 
-def write_to_file(dic, path):
+def write_to_file(dic, date, path):
     """
     Write the
     :param dic: dictionary containing the lessons for every day
+    :param date: date of the week
     :param path: path of the text file to write to
     :return: nothing
     """
 
     file_object = open(path, 'a')
-    file_object.write('\n')
+    file_object.write('{dt}\n'.format(dt=date))
     file_object.write('\n')
     file_object.write('Monday: ' + '\n' + '\n')
     for i in dic['monday']:
@@ -246,10 +257,11 @@ go_to_schedule(d)
 wait_for_schedule_to_load(d)
 
 days = get_days(d)
+week_date = get_week_date(d)
 lessons = []
 for dy in days:
     lessons.append(get_lessons_of_day(dy))
 temp1 = parse_all_days(lessons)
 
 d.close()  # Close the driver
-write_to_file(temp1, '/home/jaak/Documents/KULeuven/todo.txt')
+write_to_file(temp1, week_date, '/home/jaak/Documents/KULeuven/todo.txt')
