@@ -1,3 +1,4 @@
+from getpass import getpass
 import gkeepapi
 
 
@@ -46,7 +47,7 @@ def gkeep_main(data):
 
     # Login
     email = input('Google email: ')
-    passw = input('Google password: ')
+    passw = getpass('Google password: ')
     login(keep, email, passw)
 
     # Get note

@@ -1,4 +1,7 @@
+from getpass import getpass
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+import time
 
 
 def open_driver(url):
@@ -9,8 +12,9 @@ def open_driver(url):
     """
 
     # Defining firefox webdriver
-    driver = webdriver.Firefox(executable_path='/lib/geckodriver-v0.27.0-linux64/geckodriver')
-
+    options = Options()
+    options.add_argument('--headless')
+    driver = webdriver.Firefox(executable_path='/lib/geckodriver-v0.27.0-linux64/geckodriver', options=options)
     driver.get(url)
 
     return driver
@@ -25,8 +29,9 @@ def wait_for_login_page_to_load(driver):
     xpath_email_field = '//*[@id="email"]'
     # Check if the email field is on the page (in case we're on the login page) and check if the dashboard/schedule
     #   title element exists (in case we're on the dashboard/schedule page).
+    print('waiting for login page to load ...')
     while len(driver.find_elements_by_xpath(xpath_email_field)) == 0:
-        print('waiting for login page to load ...')
+        time.sleep(0.3)
 
 
 def wait_for_dashboard_to_load(driver):
@@ -35,12 +40,11 @@ def wait_for_dashboard_to_load(driver):
     :param driver: webdriver
     :return: nothing
     """
-    # xpath_dashboard_schedule_box = '/html/body/div/div/div[1]/div[2]/main/div/div/div/div[1]/div/div/div/div'
-    # xpath_dashboard_no_events_box = '/html/body/div/div/div[1]/div[2]/main/div/div/div/div[1]/div/div/div/h3/span'
     xpath = '/html/body/div/div/div[1]/div[2]/main/div/div/div/div[1]/div/div/div'
 
+    print('waiting for dashboard to load')
     while len(driver.find_elements_by_xpath(xpath)) == 0:
-        print('waiting for dashboard to load')
+        time.sleep(0.3)
 
 
 def wait_for_schedule_to_load(driver):
@@ -52,8 +56,9 @@ def wait_for_schedule_to_load(driver):
 
     # Check if the email field is on the page (in case we're on the login page) and check if the dashboard/schedule
     #   title element exists (in case we're on the dashboard/schedule page).
+    print('Waiting for schedule page to load ...')
     while len(driver.find_elements_by_class_name('event-content')) == 0:
-        print('waiting for schedule page to load ...')
+        time.sleep(0.3)
 
 
 def login_page(driver):
@@ -172,13 +177,6 @@ def parse_all_days(strings_of_days):
     return result
 
 
-def longest_string(strings_of_days):
-    """
-    Returns the length of the longest string in the given
-    :param strings_of_days:
-    :return:
-    """
-
 def parse_list(li):
     """Convert strings in list to wanted format.
 
@@ -194,86 +192,28 @@ def parse_list(li):
 
     return ls
 
-# def parse_list(li):
-#     """
-#     Convert the string from the given list into a usable format.
-#     :param li: list with text e.g. 'Computerarchitectuur en systeemsoftware: hoorcollege\n08:30-10:30'
-#     :return: list with converted text
-#     """
-
-#     ls = []
-
-#     max_len = 0
-
-#     # Find longest string
-#     for el in li:
-#         arr = el.split('\n')[0:2]
-#         txt = arr[0]
-#         if len(txt) > max_len:
-#             max_len = len(txt)
-
-#     # Format text
-#     for el in li:
-#         arr = el.split('\n')[0:2]
-#         front = arr[0].ljust(max_len)
-#         ls.append(front + '\t' + arr[1])
-
-#     return ls
-
-
-# def write_to_file(dic, date, path):
-#     """
-#     Write the
-#     :param dic: dictionary containing the lessons for every day
-#     :param date: date of the week
-#     :param path: path of the text file to write to
-#     :return: nothing
-#     """
-
-#     file_object = open(path, 'a')
-#     file_object.write('{dt}\n'.format(dt=date))
-#     file_object.write('\n')
-#     file_object.write('Monday: ' + '\n' + '\n')
-#     for i in dic['monday']:
-#         file_object.write(i + '\n')
-#     file_object.write('\n\n')
-#     file_object.write('Tuesday: ' + '\n' + '\n')
-#     for i in dic['tuesday']:
-#         file_object.write(i + '\n')
-#     file_object.write('\n\n')
-#     file_object.write('Wednesday: ' + '\n' + '\n')
-#     for i in dic['wednesday']:
-#         file_object.write(i + '\n')
-#     file_object.write('\n\n')
-#     file_object.write('Thursday: ' + '\n' + '\n')
-#     for i in dic['thursday']:
-#         file_object.write(i + '\n')
-#     file_object.write('\n\n')
-#     file_object.write('Friday: ' + '\n' + '\n')
-#     for i in dic['friday']:
-#         file_object.write(i + '\n')
-
-#     file_object.close()
 
 def quivr_main():
     # Call functions
     d = open_driver('https://app.quivr.be')
     wait_for_login_page_to_load(d)
     if login_page(d):  # Login if we're on the login page
-        login(d, input('Quivr email: '), input('Quivr password: '))
+        login(d, input('Quivr email: '), getpass('Quivr password: '))
 
     wait_for_dashboard_to_load(d)
     go_to_schedule(d)
     wait_for_schedule_to_load(d)
 
     days = get_days(d)
-    # week_date = get_week_date(d)
+    week_date = get_week_date(d)
+    cont = input('Date of the week is ' + week_date + ', continue? (y or n)')
+    if cont == 'n':
+        exit()
     lessons = []
     for dy in days:
         lessons.append(get_lessons_of_day(dy))
     temp1 = parse_all_days(lessons)
 
     d.close()  # Close the driver
-    # write_to_file(temp1, week_date, '/home/jaak/Documents/KULeuven/todo.txt')
 
     return temp1
