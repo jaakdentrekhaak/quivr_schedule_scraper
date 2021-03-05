@@ -7,4 +7,5 @@ from gkeep import gkeep_main
 
 # quivr_main()
 
-gkeep_main()
+data = ['hello', 'test']
+gkeep_main(data)

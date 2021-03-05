@@ -23,6 +23,10 @@ def get_note(keep, title):
     """
     return next(keep.find(query=title))
 
+def write_note(note, data):
+    for el in data:
+        note.add(el, False, gkeepapi.node.NewListItemPlacementValue.Bottom)
+
 def save_notes(keep):
     """Save note to Google Keep
 
@@ -49,12 +53,10 @@ def gkeep_main(data):
     title = input('Enter title of note: ')
     note = get_note(keep, title)
 
-    # Test
-    print(note.text)
+    # Edit note
+    write_note(note, data)
 
-    # # Edit note
-    # data = ...
-    # edit_note(keep, note, data)
+    print('New list: \n', note.text)
 
-    # # Save notes to server
-    # save_notes(keep)
+    # Save notes to server
+    save_notes(keep)
