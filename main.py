@@ -5,7 +5,12 @@ import gkeepapi
 from quivr import quivr_main
 from gkeep import gkeep_main
 
-# quivr_main()
+# Retrieve courses of this week from Quivr.com
+courses_dict = quivr_main() # Dictionary
 
-data = ['hello', 'test']
-gkeep_main(data)
+# Place courses in one list
+courses = []
+for day in courses_dict:
+    courses.extend(courses_dict[day])
+
+gkeep_main(courses)

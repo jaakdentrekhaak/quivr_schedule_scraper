@@ -179,85 +179,101 @@ def longest_string(strings_of_days):
     :return:
     """
 
-
 def parse_list(li):
-    """
-    Convert the string from the given list into a usable format.
-    :param li: list with text e.g. 'Computerarchitectuur en systeemsoftware: hoorcollege\n08:30-10:30'
-    :return: list with converted text
-    """
+    """Convert strings in list to wanted format.
 
+    Args:
+        li (list): List containing strings of unparsed course titles e.g. 'Computerarchitectuur en systeemsoftware: hoorcollege\n08:30-10:30'
+    """
     ls = []
-
-    max_len = 0
-
-    # Find longest string
-    for el in li:
-        arr = el.split('\n')[0:2]
-        txt = arr[0]
-        if len(txt) > max_len:
-            max_len = len(txt)
 
     # Format text
     for el in li:
         arr = el.split('\n')[0:2]
-        front = arr[0].ljust(max_len)
-        ls.append(front + '\t' + arr[1])
+        ls.append(arr[1] + ' ' + arr[0])
 
     return ls
 
+# def parse_list(li):
+#     """
+#     Convert the string from the given list into a usable format.
+#     :param li: list with text e.g. 'Computerarchitectuur en systeemsoftware: hoorcollege\n08:30-10:30'
+#     :return: list with converted text
+#     """
 
-def write_to_file(dic, date, path):
-    """
-    Write the
-    :param dic: dictionary containing the lessons for every day
-    :param date: date of the week
-    :param path: path of the text file to write to
-    :return: nothing
-    """
+#     ls = []
 
-    file_object = open(path, 'a')
-    file_object.write('{dt}\n'.format(dt=date))
-    file_object.write('\n')
-    file_object.write('Monday: ' + '\n' + '\n')
-    for i in dic['monday']:
-        file_object.write(i + '\n')
-    file_object.write('\n\n')
-    file_object.write('Tuesday: ' + '\n' + '\n')
-    for i in dic['tuesday']:
-        file_object.write(i + '\n')
-    file_object.write('\n\n')
-    file_object.write('Wednesday: ' + '\n' + '\n')
-    for i in dic['wednesday']:
-        file_object.write(i + '\n')
-    file_object.write('\n\n')
-    file_object.write('Thursday: ' + '\n' + '\n')
-    for i in dic['thursday']:
-        file_object.write(i + '\n')
-    file_object.write('\n\n')
-    file_object.write('Friday: ' + '\n' + '\n')
-    for i in dic['friday']:
-        file_object.write(i + '\n')
+#     max_len = 0
 
-    file_object.close()
+#     # Find longest string
+#     for el in li:
+#         arr = el.split('\n')[0:2]
+#         txt = arr[0]
+#         if len(txt) > max_len:
+#             max_len = len(txt)
+
+#     # Format text
+#     for el in li:
+#         arr = el.split('\n')[0:2]
+#         front = arr[0].ljust(max_len)
+#         ls.append(front + '\t' + arr[1])
+
+#     return ls
+
+
+# def write_to_file(dic, date, path):
+#     """
+#     Write the
+#     :param dic: dictionary containing the lessons for every day
+#     :param date: date of the week
+#     :param path: path of the text file to write to
+#     :return: nothing
+#     """
+
+#     file_object = open(path, 'a')
+#     file_object.write('{dt}\n'.format(dt=date))
+#     file_object.write('\n')
+#     file_object.write('Monday: ' + '\n' + '\n')
+#     for i in dic['monday']:
+#         file_object.write(i + '\n')
+#     file_object.write('\n\n')
+#     file_object.write('Tuesday: ' + '\n' + '\n')
+#     for i in dic['tuesday']:
+#         file_object.write(i + '\n')
+#     file_object.write('\n\n')
+#     file_object.write('Wednesday: ' + '\n' + '\n')
+#     for i in dic['wednesday']:
+#         file_object.write(i + '\n')
+#     file_object.write('\n\n')
+#     file_object.write('Thursday: ' + '\n' + '\n')
+#     for i in dic['thursday']:
+#         file_object.write(i + '\n')
+#     file_object.write('\n\n')
+#     file_object.write('Friday: ' + '\n' + '\n')
+#     for i in dic['friday']:
+#         file_object.write(i + '\n')
+
+#     file_object.close()
 
 def quivr_main():
     # Call functions
     d = open_driver('https://app.quivr.be')
     wait_for_login_page_to_load(d)
     if login_page(d):  # Login if we're on the login page
-        login(d, input('Email: '), input('Password: '))
+        login(d, input('Quivr email: '), input('Quivr password: '))
 
     wait_for_dashboard_to_load(d)
     go_to_schedule(d)
     wait_for_schedule_to_load(d)
 
     days = get_days(d)
-    week_date = get_week_date(d)
+    # week_date = get_week_date(d)
     lessons = []
     for dy in days:
         lessons.append(get_lessons_of_day(dy))
     temp1 = parse_all_days(lessons)
 
     d.close()  # Close the driver
-    write_to_file(temp1, week_date, '/home/jaak/Documents/KULeuven/todo.txt')
+    # write_to_file(temp1, week_date, '/home/jaak/Documents/KULeuven/todo.txt')
+
+    return temp1

@@ -45,12 +45,12 @@ def gkeep_main(data):
     keep = gkeepapi.Keep()
 
     # Login
-    email = input('Enter email: ')
-    passw = input('Enter password: ')
+    email = input('Google email: ')
+    passw = input('Google password: ')
     login(keep, email, passw)
 
     # Get note
-    title = input('Enter title of note: ')
+    title = input('Title of Google Keep note: ')
     note = get_note(keep, title)
 
     # Edit note
