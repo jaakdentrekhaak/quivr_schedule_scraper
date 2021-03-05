@@ -2,34 +2,40 @@ import gkeepapi
 
 
 def login(keep, email, passw):
-    """
-    Log in to Google Keep
-    :param email: email string for login
-    :param passw: password string for login
-    :return: void
+    """Log in to Google Keep
+
+    Args:
+        keep (object): Google Keep object
+        email (str): email for login
+        passw (str): password for login
     """
     keep.login(email, passw)
 
 def get_note(keep, title):
-    """
-    Get note with given title
-    :param keep: google keep object
-    :param title: title of note
-    :return: keep note
+    """Get note with given title
+
+    Args:
+        keep (object): google keep object
+        title (str): title of note
+
+    Returns:
+        object: google keep note object
     """
     return next(keep.find(query=title))
 
 def save_notes(keep):
-    """
-    Save note to Google keep
-    :param keep: google keep object
-    :return: void
+    """Save note to Google Keep
+
+    Args:
+        keep (object): Google keep object
     """
     keep.sync()
 
-def gkeep_main():
-    """
-    Run quivr code
+def gkeep_main(data):
+    """Run gkeep code
+
+    Args:
+        data (list): contains items to put in notes list
     """
 
     keep = gkeepapi.Keep()
