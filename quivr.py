@@ -29,7 +29,7 @@ def wait_for_login_page_to_load(driver):
     xpath_email_field = '//*[@id="email"]'
     # Check if the email field is on the page (in case we're on the login page) and check if the dashboard/schedule
     #   title element exists (in case we're on the dashboard/schedule page).
-    print('waiting for login page to load ...')
+    print('[QUIVR] Waiting for login page to load ...')
     while len(driver.find_elements_by_xpath(xpath_email_field)) == 0:
         time.sleep(0.3)
 
@@ -42,7 +42,7 @@ def wait_for_dashboard_to_load(driver):
     """
     xpath = '/html/body/div/div/div[1]/div[2]/main/div/div/div/div[1]/div/div/div'
 
-    print('waiting for dashboard to load')
+    print('[QUIVR] Waiting for dashboard to load ...')
     while len(driver.find_elements_by_xpath(xpath)) == 0:
         time.sleep(0.3)
 
@@ -56,7 +56,7 @@ def wait_for_schedule_to_load(driver):
 
     # Check if the email field is on the page (in case we're on the login page) and check if the dashboard/schedule
     #   title element exists (in case we're on the dashboard/schedule page).
-    print('Waiting for schedule page to load ...')
+    print('[QUIVR] Waiting for schedule page to load ...')
     while len(driver.find_elements_by_class_name('event-content')) == 0:
         time.sleep(0.3)
 

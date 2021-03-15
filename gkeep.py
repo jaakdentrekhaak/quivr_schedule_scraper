@@ -57,7 +57,7 @@ def gkeep_main(data):
     # Edit note
     write_note(note, data)
 
-    print('New list: \n', note.text)
+    print('[Google Keep] New list: \n', note.text)
 
     # Save notes to server
     save_notes(keep)
