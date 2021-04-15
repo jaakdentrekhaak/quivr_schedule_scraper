@@ -1,1 +1,2 @@
 Deal with wrong password in Quivr
+Use requests library instead of selenium (NOTE: almost impossible: you have to send checksums and client id's which you don't have)
