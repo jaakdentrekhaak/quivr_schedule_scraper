@@ -1,5 +1,7 @@
 # About
 This program can be used to scrape a timetable from Quivr and put all your lessons in a Google Keep TODO list.
+# Requirements
+/lib/geckodriver-v0.27.0-linux64/geckodriver
 # How to use the program
 1. Open a terminal.
 2. Change your directory to the directory of this program.
